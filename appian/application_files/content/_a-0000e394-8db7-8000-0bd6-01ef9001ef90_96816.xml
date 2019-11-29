@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e394-8db7-8000-0bd6-01ef9001ef90_96819</versionUuid>
+    <rule>
+        <name>LMS_GetActivityByRecord</name>
+        <uuid>_a-0000e394-8db7-8000-0bd6-01ef9001ef90_96816</uuid>
+        <description>Returns all activity history for a single record [Activity History] [Data]</description>
+        <parentUuid>39692fae-18b2-406e-a67d-a0c816c998aa</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>#"SYSTEM_SYSRULES_queryEntity_v1"(
+  entity: #"c40ac3d2-0f50-49e0-a878-3ae7f87612ad_CHANGEDSECONSTANT",
+  query: #"SYSTEM_SYSRULES_query"(
+    logicalExpression: #"SYSTEM_SYSRULES_queryLogicalExpression"(
+      operator: "AND",
+      filters: {
+        #"SYSTEM_SYSRULES_queryFilter"(
+          field: "recordId",
+          operator: "=",
+          value: ri!recordId
+        ),
+        if(
+          isnull(ri!userFilter),
+          {},
+          #"SYSTEM_SYSRULES_queryFilter"(
+            field: "who",
+            operator: "=",
+            value: ri!userFilter
+          )
+        )
+      },
+      logicalExpressions: if(
+        isnull(ri!searchTerm),
+        {},
+        #"SYSTEM_SYSRULES_queryLogicalExpression"(
+          operator: "OR",
+          filters: {
+            #"SYSTEM_SYSRULES_queryFilter"(
+              field: "action",
+              operator: "includes",
+              value: ri!searchTerm
+            ),
+            #"SYSTEM_SYSRULES_queryFilter"(
+              field: "details",
+              operator: "includes",
+              value: ri!searchTerm
+            )
+          }
+        )
+      )
+    ),
+    pagingInfo: ri!pagingInfo
+  ),
+  fetchTotalCount: true
+)</definition>
+        <namedTypedValue>
+            <name>recordId</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>searchTerm</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>userFilter</name>
+            <type>
+                <name>User</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>pagingInfo</name>
+            <type>
+                <name>PagingInfo</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="false">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e394-8db7-8000-0bd6-01ef9001ef90_96819"/>
+    </history>
+</contentHaul>

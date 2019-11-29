@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e394-8db7-8000-0bd6-01ef9001ef90_96960</versionUuid>
+    <rule>
+        <name>LMS_DocumentName</name>
+        <uuid>_a-0000e394-8db7-8000-0bd6-01ef9001ef90_96639</uuid>
+        <description>Formatting rule that gets a document's name and extension to display both together [Document Management]</description>
+        <parentUuid>10a2bc4c-c48e-492c-850d-41b227fe2760</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>document(ri!document, "name") &amp; if(
+  isnull(document(ri!document, "extension")),
+  "",
+  "." &amp; document(ri!document, "extension")
+)</definition>
+        <namedTypedValue>
+            <name>document</name>
+            <type>
+                <name>CollaborationDocument</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e394-8db7-8000-0bd6-01ef9001ef90_96960"/>
+    </history>
+</contentHaul>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e394-8db7-8000-0bd6-01ef9001ef90_97078</versionUuid>
+    <rule>
+        <name>LMS_SendTaskDetails</name>
+        <uuid>_a-0000e394-8db7-8000-0bd6-01ef9001ef90_96735</uuid>
+        <description>Component interface used for configuring a task [Tasking]</description>
+        <parentUuid>39692fae-18b2-406e-a67d-a0c816c998aa</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>{
+  #"SYSTEM_SYSRULES_pickerFieldUsers"(
+    label: "Assignee",
+    instructions: if(
+      or(
+        isnull(ri!assignee),
+        isusermemberofgroup(ri!assignee, #"_a-0000e394-8db7-8000-0bd6-01ef9001ef90_96595")
+      ),
+      "",
+      "This user is not a user of this application. If you send a task to them, they will be given access to this application."
+    ),
+    maxSelections: 1,
+    value: ri!assignee,
+    saveInto: ri!assignee,
+    required: true
+  ),
+  #"SYSTEM_SYSRULES_paragraphField"(
+    label: "Task Description",
+    labelPosition: "ABOVE",
+    validations: if(len(ri!taskDetails) &gt; 4000, "Message may not be longer than 4000 characters. You have entered " &amp; len(ri!taskDetails) &amp; " characters.", ""),
+    value: ri!taskDetails,
+    saveInto: ri!taskDetails,
+    required: true
+  ),
+  #"SYSTEM_SYSRULES_dateTimeField"(
+    label: "Deadline",
+    value: ri!deadline,
+    saveInto: ri!deadline,
+    validations: if(
+      or(isnull(ri!deadline), gmt(ri!deadline) &lt; now()),
+      "Deadlines must be in the future",
+      ""
+    )
+  )
+}</definition>
+        <namedTypedValue>
+            <name>assignee</name>
+            <type>
+                <name>User</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>taskDetails</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>deadline</name>
+            <type>
+                <name>dateTime</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <metadataExpr></metadataExpr>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e394-8db7-8000-0bd6-01ef9001ef90_97078"/>
+    </history>
+</contentHaul>

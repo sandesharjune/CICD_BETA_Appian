@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e394-8db7-8000-0bd6-01ef9001ef90_97031</versionUuid>
+    <rule>
+        <name>LMS_GetCDTFieldDiff</name>
+        <uuid>_a-0000e394-8db7-8000-0bd6-01ef9001ef90_96631</uuid>
+        <description>Support rule for creating the details field of an activity CDT, used when the user activity was to create or update a record. Given two CDTs and a field name, returns empty string if the field is the same between the CDTs. Returns the change if they are different. [Activity History]</description>
+        <parentUuid>10a2bc4c-c48e-492c-850d-41b227fe2760</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>/* If there's no change, don't add anything to the current string *
+ * If there is a change, add it to the string before returning it */
+if(
+  and( /* To catch lists of values */
+    index(ri!oldCDT, ri!fields[ri!index], {}) =
+    index(ri!newCDT, ri!fields[ri!index], {})
+  ),
+  ri!currentString,
+  concat(
+    ri!currentString,
+    if(
+      or(
+        isnull(index(ri!oldCDT, ri!fields[ri!index], {})),
+        isnull(index(index(ri!oldCDT, ri!fields[ri!index], {}), "value", {}))
+      ),
+      /* If there was no old field, just show current value */ 
+      if(
+        /* Nested CDT lookup fields have "selection" in their field type */
+        search("SELECT", ri!fieldTypes[ri!index]),
+        ri!fieldNames[ri!index] &amp; ": " &amp; joinarray(index(index(ri!newCDT,ri!fields[ri!index],{}), "value", {}) &amp; char(10), ", "),
+
+        if(
+          /* Record fields can't display their title for security reasons */
+          search("record", ri!fieldTypes[ri!index]),
+          ri!fieldNames[ri!index] &amp; ": record value selected" &amp; char(10),
+
+          if(
+            /* Since paragraph fields can contain long values, only show the first 200 chars  */
+            search("paragraph_reference", ri!fieldTypes[ri!index]),
+            ri!fieldNames[ri!index] &amp; ": " &amp; left(index(index(ri!newCDT, ri!fields[ri!index], {}), "value", {}), 200) &amp; char(10),
+
+            if(
+              /* Certain older paragraph fields are direct fields of the main CDT, instead of nested children, *
+               * so we don't have to index into their value field.                                             */
+              search("paragraph", ri!fieldTypes[ri!index]),
+              ri!fieldNames[ri!index] &amp; ": " &amp; left(index(ri!newCDT, ri!fields[ri!index], {}), 200) &amp; char(10),
+
+              /* For primitive fields (text, date, number) just read out the value */
+              ri!fieldNames[ri!index] &amp; ": " &amp; index(ri!newCDT, ri!fields[ri!index], {}) &amp; char(10)
+            )
+          )
+        )
+      ),
+      /* Otherwise, show old and new values */
+      if(
+        /* Nested CDT lookup fields have "selection" in their field type */
+        search("SELECT", ri!fieldTypes[ri!index]),
+        ri!fieldNames[ri!index] &amp; ": " &amp; 
+          joinarray(index(index(ri!oldCDT,ri!fields[ri!index],{}), "value", {}), ", ") &amp; " ➝ " &amp;
+          joinarray(index(index(ri!newCDT,ri!fields[ri!index],{}), "value", {}), ", ") &amp;
+          char(10),
+
+        if(
+          /* Record fields can't display their title for security reasons */
+          search("record", ri!fieldTypes[ri!index]),
+          ri!fieldNames[ri!index] &amp; ": record value changed" &amp; char(10),
+        
+          if(
+            /* Since paragraph fields can contain long values, only show the first 200 chars  */
+            search("paragraph_reference", ri!fieldTypes[ri!index]),
+            ri!fieldNames[ri!index] &amp; ": " &amp;
+              left(index(index(ri!oldCDT, ri!fields[ri!index], {}), "value", {}), 200) &amp; " ➝ " &amp;
+              left(index(index(ri!newCDT, ri!fields[ri!index], {}), "value", {}), 200) &amp;
+              char(10),
+
+            if(
+              /* Certain older paragraph fields are direct fields of the main CDT, instead of nested children, *
+               * so we don't have to index into their value field.                                             */
+              search("paragraph", ri!fieldTypes[ri!index]),
+              ri!fieldNames[ri!index] &amp; ": " &amp;
+                left(index(ri!oldCDT, ri!fields[ri!index], {}), 200) &amp; " ➝ " &amp;
+                left(index(ri!newCDT, ri!fields[ri!index], {}), 200) &amp;
+                char(10),
+
+              /* For primitive fields (text, date, number) just read out the value */
+              ri!fieldNames[ri!index] &amp; ": " &amp;
+                index(ri!oldCDT, ri!fields[ri!index], {}) &amp; " ➝ " &amp;
+                index(ri!newCDT, ri!fields[ri!index], {}) &amp;
+                char(10)
+            )
+          )
+        )
+      )
+    )
+  )
+)
+</definition>
+        <namedTypedValue>
+            <name>currentString</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>index</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>oldCDT</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>newCDT</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>fields</name>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>fieldNames</name>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>fieldTypes</name>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e394-8db7-8000-0bd6-01ef9001ef90_97031"/>
+    </history>
+</contentHaul>

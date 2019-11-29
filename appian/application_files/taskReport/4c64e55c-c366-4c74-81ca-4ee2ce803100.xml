@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<taskReportHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>e32a4c25-9da1-4cb5-ad6d-00e5ae3037da</versionUuid>
+    <taskReport a:uuid="4c64e55c-c366-4c74-81ca-4ee2ce803100" name="Library Management system">
+        <a:description>Task report showing open tasks in the Library Management system application [Tasking]</a:description>
+        <a:uiExpr>=#"_a-0000e394-8db7-8000-0bd6-01ef9001ef90_96747"()</a:uiExpr>
+        <a:urlStub>6tWYlg</a:urlStub>
+    </taskReport>
+    <roleMap>
+        <role name="report_administrator">
+            <users/>
+            <groups>
+                <groupUuid>_e-0000e394-8db7-8000-0b9d-011e94011e94_339</groupUuid>
+            </groups>
+        </role>
+        <role name="report_viewer">
+            <users/>
+            <groups>
+                <groupUuid>_e-0000e394-8db7-8000-0b9d-011e94011e94_341</groupUuid>
+            </groups>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="e32a4c25-9da1-4cb5-ad6d-00e5ae3037da"/>
+    </history>
+</taskReportHaul>

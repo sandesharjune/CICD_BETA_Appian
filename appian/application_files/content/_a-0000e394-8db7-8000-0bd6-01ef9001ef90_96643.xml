@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e394-8db7-8000-0bd6-01ef9001ef90_96949</versionUuid>
+    <rule>
+        <name>LMS_FriendlyFormatDate</name>
+        <uuid>_a-0000e394-8db7-8000-0bd6-01ef9001ef90_96643</uuid>
+        <description>Formatting rule that takes a date-time and returns a different format based on how long ago it occured. If it is today, it will only show the time. If it's this year, it will only show the day and month. If it's longer than one year, it will show the day, month and year. For future dates, the full date and time is shown. [Base]</description>
+        <parentUuid>10a2bc4c-c48e-492c-850d-41b227fe2760</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>if(
+  isnull(ri!date),
+  "",
+  if(
+    /* Else if the date is on a future date, show the full date and time */
+    ri!date &gt; today()+1,
+    text(ri!date, "MMM d, yyyy h:mm a"),
+    if(
+      /* Else if the input is sometime today, just show the time. */
+      ri!date &gt; today(),
+      text(ri!date, "h:mm:ss a"),
+      if(
+        /* Else if the input is sometime this year, just show the day and month. */
+        ri!date &gt; date(year(now()), 1, 1),
+        text(ri!date, "MMM d"),
+        /* Else, show day, month, and year */
+        text(ri!date, "MMM d, yyyy")
+      )
+    )
+  )
+)</definition>
+        <namedTypedValue>
+            <name>date</name>
+            <type>
+                <name>dateTime</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e394-8db7-8000-0bd6-01ef9001ef90_96949"/>
+    </history>
+</contentHaul>

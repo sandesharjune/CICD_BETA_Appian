@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<groupHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_e-0000e394-8db7-8000-0b9d-011e94011e94_342</versionUuid>
+    <group>
+        <name>Library Management system Users</name>
+        <securityMap>SECURITYMAP_TEAM</securityMap>
+        <uuid>_e-0000e394-8db7-8000-0b9d-011e94011e94_341</uuid>
+        <groupTypeUuid>SYSTEM_GROUP_TYPE_CUSTOM</groupTypeUuid>
+        <description>Group that all Library Management system activity is secured to</description>
+        <delegatedCreation>false</delegatedCreation>
+        <memberPolicy>MEMBERPOLICY_CLOSED</memberPolicy>
+        <viewingPolicy>VIEWINGPOLICY_LOW</viewingPolicy>
+        <attributes/>
+    </group>
+    <members>
+        <users/>
+        <groups>
+            <groupUuid>_e-0000e394-8db7-8000-0b9d-011e94011e94_339</groupUuid>
+        </groups>
+    </members>
+    <admins>
+        <users/>
+        <groups>
+            <groupUuid>_e-0000e394-8db7-8000-0b9d-011e94011e94_339</groupUuid>
+            <groupUuid>_e-0000e394-8db7-8000-0b9d-011e94011e94_341</groupUuid>
+        </groups>
+    </admins>
+    <ruleSet/>
+    <history>
+        <historyInfo versionUuid="_e-0000e394-8db7-8000-0b9d-011e94011e94_342"/>
+    </history>
+</groupHaul>

@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e394-8db7-8000-0bd6-01ef9001ef90_96938</versionUuid>
+    <rule>
+        <name>LMS_RemoveInactiveValues</name>
+        <uuid>_a-0000e394-8db7-8000-0bd6-01ef9001ef90_96659</uuid>
+        <description>Rule that takes a list of CDTs and removes all of the inactive values except the ones selected, as well as removing any active, unselected values that exactly duplicate inactive, selected values. [Base]</description>
+        <parentUuid>10a2bc4c-c48e-492c-850d-41b227fe2760</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>a!localVariables(
+  /* All local variables used here are lists of indices for options */
+  local!selections: wherecontains(ri!selections, ri!options.id),
+  /* These are the inactive options to keep, because this record  *
+     * record has them stored and so they should be displayed.      */
+  local!inactiveSelections: intersection(
+    local!selections,
+    /* All the inactive options to remove by default                */
+    where(not(ri!options.active), {})
+  ),
+  local!activeOptions: where(ri!options.active, null),
+  /* Find the values of all unselected, active options that have    *
+   * the same values as a selected, inactive option.                */
+  local!activeOptionsToRemove: if(
+    or(isnull(local!inactiveSelections), length(local!inactiveSelections) = 0),
+    {},
+    intersection(
+      /* Find the values of the unselected, active options          */
+      difference(local!activeOptions, local!selections),
+      /* Find the values of the selected, inactive options          */
+      wherecontains(
+        index(ri!options.value,local!inactiveSelections),
+        ri!options.value
+      )
+    )
+  ),
+  local!optionIndices: if(
+    or(isnull(local!activeOptionsToRemove), length(local!activeOptionsToRemove) = 0),
+    union(local!selections, local!activeOptions),
+    union(
+      local!selections,
+      difference(
+        local!activeOptions,
+        local!activeOptionsToRemove
+      )
+    )
+  ),
+  /* If there are no selections, just show the active values.       *
+   * Otherwise, show all selected and active values, minus any      *
+   * active unselected values that duplicate selected values.       */
+  if(
+    or(isnull(ri!selections), length(ri!selections) = 0),
+    index(ri!options, local!activeOptions, {}),
+    difference(ri!options, remove(ri!options, local!optionIndices))
+  )
+)</definition>
+        <namedTypedValue>
+            <name>options</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>selections</name>
+            <type>
+                <name>Integer?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e394-8db7-8000-0bd6-01ef9001ef90_96938"/>
+    </history>
+</contentHaul>

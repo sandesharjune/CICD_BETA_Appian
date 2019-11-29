@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tempoFeedHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>94b05e3a-1565-44fa-94f0-9884bd2542bc</versionUuid>
+    <tempoFeed>
+        <uuid>9ad4428a-f50b-4749-bb5e-a988303de4f2</uuid>
+        <name>Library Management system</name>
+        <description>Feed for updates about LMses</description>
+        <showInCatalog>true</showInCatalog>
+        <systemFeed>false</systemFeed>
+    </tempoFeed>
+    <roleMap>
+        <role name="administrator">
+            <users/>
+            <groups>
+                <groupUuid>_e-0000e394-8db7-8000-0b9d-011e94011e94_339</groupUuid>
+            </groups>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="94b05e3a-1565-44fa-94f0-9884bd2542bc"/>
+    </history>
+</tempoFeedHaul>
